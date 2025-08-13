@@ -8,5 +8,5 @@ resource "aws_vpc" "name" {
 }
 resource "aws_s3_bucket" "name" {
   bucket = "dkjlnslala"
-
+ 
 }
