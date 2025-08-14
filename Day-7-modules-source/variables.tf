@@ -4,7 +4,7 @@ variable "ami-id" {
     default = ""
   
 }
-variable "instance-type" {
+variable "instance_type" {
     type = string
     default = ""
   
