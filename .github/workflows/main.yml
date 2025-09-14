@@ -1,32 +1,37 @@
-name: Terraform CI
+name: Terraform Pipeline
 
 on:
-  workflow_dispatch:   # run manually from Actions tab
   push:
     branches:
-      - main           # run on pushes to main branch
+      - main
+  pull_request:
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: Day-2-basic-code-tfvars
+
     steps:
-      # Stage: checkout
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Install Terraform
-      - name: Setup Terraform
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1   # or your region
+
+      - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.9.0   # set your Terraform version
+          terraform_version: 1.6.6
 
-      # Stage: init
       - name: Terraform Init
-        working-directory: Day-2-basic-code-tfvars
         run: terraform init
 
-      # Stage: plan
       - name: Terraform Plan
-        working-directory: Day-2-basic-code-tfvars
         run: terraform plan
